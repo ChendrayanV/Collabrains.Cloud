@@ -3,7 +3,14 @@ version: '3'
 services:
   product-service:
     build: ./products
-    volumes:
-      - ./products:/usr/src/app
+    image: chenv/products:v1.0.0
     ports:
       - 5001:80
+
+  application:
+    build: ./application
+    image: chenv/application:v1.0.0
+    ports:
+      - 5000:80
+    depends_on:
+      - product-service
