@@ -3,7 +3,7 @@ version: "3.3"
 services:
   colors-of-cuisine:
     build: ./products
-    image: chenv/products:v1.0.1
+    image: chenv/colors-of-cuisine:v1.0.1
     ports:
       - 5001:3000
 
