@@ -6,5 +6,9 @@
         [PSCustomObject]@{
             Name  = "Wheat"
             Brand = "Silver"
+        }
+        [PSCustomObject]@{
+            Name  = "Semolina"
+            Brand = "Platinum"
         })
 }
