@@ -5,6 +5,6 @@ Start-PodeServer {
         return (. $path $data)
     }
     Add-PodeRoute -Method Get -Path '/index' -ScriptBlock {
-        Write-PodeViewResponse -Path $(.\views\app.ps1)
+        Write-PodeViewResponse -Path "index.ps1"
     }
 }

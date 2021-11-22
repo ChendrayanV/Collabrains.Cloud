@@ -1,11 +1,11 @@
-version: '3'
+version: "3.3"
 
 services:
   product-service:
     build: ./products
     image: chenv/products:v1.0.0
     ports:
-      - 5001:80
+      - 5001:3000
 
   application:
     build: ./application
