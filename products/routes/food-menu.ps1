@@ -1,3 +1,13 @@
 [PSCustomObject]@{
-    Name = Value
+    items = @(
+        [PSCustomObject]@{
+            name = 'Idly + Chutney'
+        }
+        [PSCustomObject]@{
+            name = 'Dosae + Chicken Curry'
+        }
+        [PSCustomObject]@{
+            name = 'Idly + Lamb Curry'
+        }
+    )
 }

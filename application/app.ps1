@@ -1,5 +1,5 @@
 Start-PodeServer {
-    Add-PodeEndpoint -Address * -Port 8080 -Protocol Http
+    Add-PodeEndpoint -Address * -Port 80 -Protocol Http
     Set-PodeViewEngine -Type PSHTML -Extension PS1 -ScriptBlock {
         param($path, $data)
         return (. $path $data)
