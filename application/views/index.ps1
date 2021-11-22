@@ -57,13 +57,13 @@ return html -Content {
     body -Content {
         (1..3).ForEach({ br })
         Div -Class 'container' -Content {
-            h3 -Class 'Secondary fg-lightRed' -Content 'Work In Progress...' -Style 'text-align:center'
+            h3 -Class 'Secondary fg-lightRed' -Content 'Colors of Cuisine...' -Style 'text-align:center'
             hr
             Div -Class 'row flex-align-center rounded' -Content {
                 @(
-                    "https://media.istockphoto.com/photos/automation-industrial-business-process-workflow-optimisation-picture-id1280048451?b=1&k=20&m=1280048451&s=170667a&w=0&h=vPUK1jUkpkczueFaya2ZGdjDtNQKRo75f6yEzsXMY7A=",
-                    "https://images.unsplash.com/photo-1579621970795-87facc2f976d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y29zdHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
-                    "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8dGVhbXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
+                    "https://media.istockphoto.com/photos/ghee-roast-dosa-and-idlii-picture-id1306134869?b=1&k=20&m=1306134869&s=170667a&w=0&h=o4mjTxdQq0mMqe3tyY6bmmPldxryUpU49fs8tUpIneA=",
+                    "https://media.istockphoto.com/photos/dabba-masala-picture-id465015726?b=1&k=20&m=465015726&s=170667a&w=0&h=IsNYymgb7aX2qZcZ-IdBVZ7xC1m6JNJ9ZFOcEvF_PiM=",
+                    "https://images.unsplash.com/photo-1509359149003-657ef23eaf04?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8bWFzYWxhfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
                 ).ForEach(
                     {
                         CustomCard -ImageSrc $($_)  
@@ -72,6 +72,13 @@ return html -Content {
                 
             }
             hr 
+            # $items = Invoke-RestMethod -Uri "http://localhost:3000/products"
+            # selecttag -Content {
+            #     foreach($Item in $Items.items) {
+            #         option -Content $($Item.Name)
+            #     }
+            # } -name 'food-name'
+            
         }
     }
 }
