@@ -41,7 +41,6 @@ return html -Content {
             hr 
             h3 -Class 'Secondary fg-lightRed' -Content $('Food Menu') -Style 'text-align:center'
             $items = Invoke-RestMethod -Uri 'http://colors-of-cuisine:3000/food-menu'
-            # $items.items
             selecttag -Content {
                 foreach($Item in $Items.items) {
                     option -Content $Item.name

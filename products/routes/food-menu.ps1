@@ -9,5 +9,8 @@
         [PSCustomObject]@{
             name = 'Idly + Lamb Curry'
         }
+        [PSCustomObject]@{
+            name = 'Idly + Sambhar'
+        }
     )
 }
