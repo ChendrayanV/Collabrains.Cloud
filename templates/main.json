@@ -4,9 +4,6 @@
   "parameters": {
     "suffix": {
       "type": "string"
-    },
-    "dockerImageName": {
-      "type": "string"
     }
   },
   "functions": [],
@@ -35,9 +32,6 @@
         "parameters": {
           "suffix": {
             "value": "[parameters('suffix')]"
-          },
-          "dockerImageName": {
-            "value": "[parameters('dockerImageName')]"
           }
         },
         "template": {
@@ -48,7 +42,8 @@
               "type": "string"
             },
             "dockerImageName": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": "DOCKER|chenv/collabrains.cloud:v1.0.1"
             }
           },
           "functions": [],

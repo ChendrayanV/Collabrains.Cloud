@@ -1,6 +1,6 @@
 param suffix string
-// param dockerImageName string = 'DOCKER|chenv/application:v1.0.2'
-param dockerImageName string
+param dockerImageName string = 'DOCKER|chenv/collabrains.cloud:v1.0.1'
+// param dockerImageName string
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2020-12-01' = {
   name: 'asp-colors-of-cuisines-${suffix}'

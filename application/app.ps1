@@ -4,7 +4,7 @@ Start-PodeServer {
         param($path, $data)
         return (. $path $data)
     }
-    Add-PodeRoute -Method Get -Path '/' -ScriptBlock {
+    Add-PodeRoute -Method Get -Path '/home' -ScriptBlock {
         Write-PodeViewResponse -Path "index.ps1"
     }
 }
