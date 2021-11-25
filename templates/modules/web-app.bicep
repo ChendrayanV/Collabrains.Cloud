@@ -35,6 +35,7 @@ resource webApplication 'Microsoft.Web/sites@2018-11-01' = {
     hyperV: false
     siteConfig: {
       numberOfWorkers: 1
+      alwaysOn: true
       linuxFxVersion: 'DOCKER|${dockerImageName}'
       appSettings: [
         {

@@ -25,7 +25,7 @@ return html -Content {
     body -Content {
         (1..3).ForEach({ br })
         Div -Class 'container' -Content {
-            h3 -Class 'Secondary fg-lightRed' -Content 'Colors of Cuisine...' -Style 'text-align:center'
+            h3 -Class 'Secondary fg-lightBlue' -Content 'Colors of Cuisine...' -Style 'text-align:center'
             hr
             Div -Class 'row flex-align-center rounded' -Content {
                 @(
