@@ -1,6 +1,6 @@
 param suffix string
-param dockerImageName string = 'DOCKER|chenv/collabrains.cloud:v1.0.1'
-//param dockerImageName string
+// param dockerImageName string = 'DOCKER|chenv/collabrains.cloud:v1.0.1'
+param dockerImageName string
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2020-12-01' = {
   name: 'asp-colors-of-cuisines-${suffix}'
@@ -35,7 +35,7 @@ resource webApplication 'Microsoft.Web/sites@2018-11-01' = {
     hyperV: false
     siteConfig: {
       numberOfWorkers: 1
-      linuxFxVersion: dockerImageName
+      linuxFxVersion: 'DOCKER|${dockerImageName}'
       appSettings: [
         {
           name: 'WEBSITES_ENABLE_APP_SERVICE_STORAGE'

@@ -4,6 +4,9 @@
   "parameters": {
     "suffix": {
       "type": "string"
+    },
+    "dockerImageName": {
+      "type": "string"
     }
   },
   "functions": [],
@@ -32,6 +35,9 @@
         "parameters": {
           "suffix": {
             "value": "[parameters('suffix')]"
+          },
+          "dockerImageName": {
+            "value": "[parameters('dockerImageName')]"
           }
         },
         "template": {
@@ -42,8 +48,7 @@
               "type": "string"
             },
             "dockerImageName": {
-              "type": "string",
-              "defaultValue": "DOCKER|chenv/collabrains.cloud:v1.0.1"
+              "type": "string"
             }
           },
           "functions": [],
@@ -84,7 +89,7 @@
                 "hyperV": false,
                 "siteConfig": {
                   "numberOfWorkers": 1,
-                  "linuxFxVersion": "[parameters('dockerImageName')]",
+                  "linuxFxVersion": "[format('DOCKER|{0}', parameters('dockerImageName'))]",
                   "appSettings": [
                     {
                       "name": "WEBSITES_ENABLE_APP_SERVICE_STORAGE",

@@ -18,7 +18,7 @@ function CustomCard {
 }
 return html -Content {
     head -Content {
-        Title -Content "Az Container Apps | Home"
+        Title -Content "CoC | Index"
         Link -href "https://cdn.metroui.org.ua/v4.3.2/css/metro-all.min.css" -rel "stylesheet"
         script -src "https://cdn.metroui.org.ua/v4/js/metro.min.js"
     }
