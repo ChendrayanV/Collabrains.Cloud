@@ -1,7 +1,11 @@
 targetScope = 'subscription'
 
+param suffix string
+@secure()
+param registryPassword string
+
 resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
-  name: 'tobedeleted'
+  name: 'tobedeleted-${suffix}'
   location: 'northeurope'
   tags: {
     'env': 'development'
@@ -11,12 +15,12 @@ resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
 }
 
 module LogAnalyticsworkSpace 'modules/az-log-analytics/log-analytics.bicep' = {
-  name: 'az-container-app-deloyment'
+  name: 'az-container-app-deloyment-${suffix}'
   scope: resourceGroup(rg.name)
 }
 
 module kubeEnvironment 'modules/az-kube-environment/az-kube-environment.bicep' = {
-  name: 'kube-deployment'
+  name: 'kube-deployment-${suffix}'
   params: {
     customerId: LogAnalyticsworkSpace.outputs.customerId
     primarySharedKey: LogAnalyticsworkSpace.outputs.primarySharedKey
@@ -25,9 +29,10 @@ module kubeEnvironment 'modules/az-kube-environment/az-kube-environment.bicep' =
 }
 
 module containerApp 'modules/az-container-app/container-app.bicep' = {
-  name: 'tobedel'
+  name: 'tobedel-${suffix}'
   scope: resourceGroup(rg.name)
   params: {
     kubeEnvironmentId: kubeEnvironment.outputs.kubeEnvironmentId
+    registryPassword: registryPassword
   }
 }
