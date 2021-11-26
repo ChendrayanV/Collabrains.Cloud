@@ -9,6 +9,8 @@ param logAnalyticsName string = 'Law-Containers-App'
 param kubeEnvironmentName string = 'Kube-Environment'
 param containerAppName string = 'colorsofcuisine'
 param registryPassword string
+// @secure()
+// param registryPassword string
 
 resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   name: 'colorsofcuisine-${suffix}'
@@ -25,6 +27,9 @@ module LogAnalyticsworkSpace 'modules/az-log-analytics/log-analytics.bicep' = {
   scope: resourceGroup(rg.name)
   params: {
     logAnalyticsName: '${logAnalyticsName}-${suffix}'
+    environment:environment
+    owner:owner
+    costcenter:costcenter
   }
 }
 
