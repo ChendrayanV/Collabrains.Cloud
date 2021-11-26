@@ -1,8 +1,9 @@
 param customerId string
 param primarySharedKey string
+param kubeEnvironmentName string
 
 resource kubeEnvironment 'Microsoft.Web/kubeEnvironments@2021-01-15' = {
-  name: 'ube-demo'
+  name: kubeEnvironmentName
   location: 'northeurope'
   properties: {
     type: 'managed'

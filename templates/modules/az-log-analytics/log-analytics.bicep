@@ -1,5 +1,6 @@
+param logAnalyticsName string
 resource law 'Microsoft.OperationalInsights/workspaces@2020-03-01-preview' = {
-  name: 'LAW-TOBEDELETED'
+  name: logAnalyticsName
   location: resourceGroup().location
   properties: any({
     retentionInDays: 30

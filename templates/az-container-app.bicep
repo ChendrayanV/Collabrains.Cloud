@@ -1,22 +1,30 @@
 targetScope = 'subscription'
 
+param environment string = 'dev'
+param owner string = 'Chendrayan Venkatesan'
+param costcenter string = 'AZ-0023'
 param suffix string
-@secure()
-param registryPassword string
-
+param location string = 'northeurope'
+param logAnalyticsName string = 'Law-Containers-App'
+param kubeEnvironmentName string = 'Kube-Environment'
+param containerAppName string = 'colorsofcuisine'
+param registryPassword string 
 resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
-  name: 'tobedeleted-${suffix}'
-  location: 'northeurope'
+  name: 'colorsofcuisine-${suffix}'
+  location: location
   tags: {
-    'env': 'development'
-    'owner': 'chendrayan venkatesan'
-    'costcenter': 'AZ-0001'
+    'env': environment
+    'owner': owner
+    'costcenter': costcenter
   }
 }
 
 module LogAnalyticsworkSpace 'modules/az-log-analytics/log-analytics.bicep' = {
-  name: 'az-container-app-deloyment-${suffix}'
+  name: 'log-analytics-deployment'
   scope: resourceGroup(rg.name)
+  params: {
+    logAnalyticsName: '${logAnalyticsName}-${suffix}'
+  }
 }
 
 module kubeEnvironment 'modules/az-kube-environment/az-kube-environment.bicep' = {
@@ -24,15 +32,17 @@ module kubeEnvironment 'modules/az-kube-environment/az-kube-environment.bicep' =
   params: {
     customerId: LogAnalyticsworkSpace.outputs.customerId
     primarySharedKey: LogAnalyticsworkSpace.outputs.primarySharedKey
+    kubeEnvironmentName: '${kubeEnvironmentName}-${suffix}'
   }
   scope: resourceGroup(rg.name)
 }
 
 module containerApp 'modules/az-container-app/container-app.bicep' = {
-  name: 'tobedel-${suffix}'
+  name: '${containerAppName}-${suffix}'
   scope: resourceGroup(rg.name)
   params: {
     kubeEnvironmentId: kubeEnvironment.outputs.kubeEnvironmentId
     registryPassword: registryPassword
+    containerAppName: containerAppName
   }
 }

@@ -1,7 +1,6 @@
 param kubeEnvironmentId string
-param containerName string = 'tobedeleteddemo'
+param containerAppName string
 param userName string = 'chenv'
-@secure()
 param registryPassword string
 param targetPort int = 80
 param image string = 'chenv/collabrains.cloud:v1.0.3'
@@ -13,7 +12,7 @@ param ingress object = {
 }
 
 resource containerApp 'Microsoft.Web/containerapps@2021-03-01' = {
-  name: containerName
+  name: containerAppName
   location: resourceGroup().location
   properties: {
     kubeEnvironmentId: kubeEnvironmentId
