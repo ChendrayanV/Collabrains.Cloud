@@ -89,6 +89,7 @@
                 "hyperV": false,
                 "siteConfig": {
                   "numberOfWorkers": 1,
+                  "alwaysOn": true,
                   "linuxFxVersion": "[format('DOCKER|{0}', parameters('dockerImageName'))]",
                   "appSettings": [
                     {
