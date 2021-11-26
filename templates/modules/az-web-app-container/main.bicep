@@ -14,7 +14,7 @@ resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
 }
 
 
-module webapp 'modules/web-app.bicep' = {
+module webapp 'web-app.bicep' = {
   name: 'webapp-deployment'
   scope: resourceGroup(rg.name)
   params: {

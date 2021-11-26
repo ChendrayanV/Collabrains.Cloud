@@ -1,0 +1,187 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "functions": [],
+  "resources": [
+    {
+      "type": "Microsoft.Resources/resourceGroups",
+      "apiVersion": "2021-04-01",
+      "name": "tobedeleted",
+      "location": "northeurope",
+      "tags": {
+        "env": "development",
+        "owner": "chendrayan venkatesan",
+        "costcenter": "AZ-0001"
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "az-container-app-deloyment",
+      "resourceGroup": "tobedeleted",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "functions": [],
+          "resources": [
+            {
+              "type": "Microsoft.OperationalInsights/workspaces",
+              "apiVersion": "2020-03-01-preview",
+              "name": "LAW-TOBEDELETED",
+              "location": "[resourceGroup().location]",
+              "properties": {
+                "retentionInDays": 30,
+                "features": {
+                  "searchVersion": 1
+                },
+                "sku": {
+                  "name": "PerGB2018"
+                }
+              }
+            }
+          ],
+          "outputs": {
+            "customerId": {
+              "type": "string",
+              "value": "[reference(resourceId('Microsoft.OperationalInsights/workspaces', 'LAW-TOBEDELETED')).customerId]"
+            },
+            "primarySharedKey": {
+              "type": "string",
+              "value": "[listKeys(resourceId('Microsoft.OperationalInsights/workspaces', 'LAW-TOBEDELETED'), '2020-03-01-preview').primarySharedKey]"
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "[subscriptionResourceId('Microsoft.Resources/resourceGroups', 'tobedeleted')]"
+      ]
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "kube-deployment",
+      "resourceGroup": "tobedeleted",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "customerId": {
+            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, 'tobedeleted'), 'Microsoft.Resources/deployments', 'az-container-app-deloyment'), '2019-10-01').outputs.customerId.value]"
+          },
+          "primarySharedKey": {
+            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, 'tobedeleted'), 'Microsoft.Resources/deployments', 'az-container-app-deloyment'), '2019-10-01').outputs.primarySharedKey.value]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "parameters": {
+            "customerId": {
+              "type": "string"
+            },
+            "primarySharedKey": {
+              "type": "string"
+            }
+          },
+          "functions": [],
+          "resources": [
+            {
+              "type": "Microsoft.Web/kubeEnvironments",
+              "apiVersion": "2021-01-15",
+              "name": "ube-demo",
+              "location": "northeurope",
+              "properties": {
+                "type": "managed",
+                "appLogsConfiguration": {
+                  "destination": "log-analytics",
+                  "logAnalyticsConfiguration": {
+                    "customerId": "[parameters('customerId')]",
+                    "sharedKey": "[parameters('primarySharedKey')]"
+                  }
+                }
+              }
+            }
+          ],
+          "outputs": {
+            "kubeEnvironmentId": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.Web/kubeEnvironments', 'ube-demo')]"
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, 'tobedeleted'), 'Microsoft.Resources/deployments', 'az-container-app-deloyment')]",
+        "[subscriptionResourceId('Microsoft.Resources/resourceGroups', 'tobedeleted')]"
+      ]
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "tobedel",
+      "resourceGroup": "tobedeleted",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "kubeEnvironmentId": {
+            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, 'tobedeleted'), 'Microsoft.Resources/deployments', 'kube-deployment'), '2019-10-01').outputs.kubeEnvironmentId.value]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "parameters": {
+            "kubeEnvironmentId": {
+              "type": "string"
+            }
+          },
+          "functions": [],
+          "resources": [
+            {
+              "type": "Microsoft.Web/containerapps",
+              "apiVersion": "2021-03-01",
+              "name": "tobedeletechen",
+              "location": "[resourceGroup().location]",
+              "properties": {
+                "kubeEnvironmentId": "[parameters('kubeEnvironmentId')]",
+                "configuration": {
+                  "secrets": [],
+                  "registries": [],
+                  "ingress": {
+                    "external": true,
+                    "targetPort": 3000
+                  }
+                },
+                "template": {
+                  "containers": {
+                    "image": "docker.io/chenv/collabrains.cloud:v1.0.3",
+                    "name": "collabrains",
+                    "command": [],
+                    "resources": {
+                      "cpu": ".25",
+                      "memory": ".5Gi"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, 'tobedeleted'), 'Microsoft.Resources/deployments', 'kube-deployment')]",
+        "[subscriptionResourceId('Microsoft.Resources/resourceGroups', 'tobedeleted')]"
+      ]
+    }
+  ]
+}
