@@ -3,12 +3,13 @@ targetScope = 'subscription'
 param environment string = 'dev'
 param owner string = 'Chendrayan Venkatesan'
 param costcenter string = 'AZ-0023'
-param suffix string
+param suffix string = 'dev'
 param location string = 'northeurope'
 param logAnalyticsName string = 'Law-Containers-App'
 param kubeEnvironmentName string = 'Kube-Environment'
 param containerAppName string = 'colorsofcuisine'
-param registryPassword string 
+param registryPassword string
+
 resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   name: 'colorsofcuisine-${suffix}'
   location: location
